@@ -1,0 +1,14 @@
+{
+    "name": "jdbc-source-postgres",
+    "config": {
+      "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
+      "tasks.max": "1",
+      "connection.url": "jdbc:postgresql://postgres:5432/testdb?user=postgres&password=postgres",
+      "table.whitelist": "employees",
+      "mode": "incrementing",
+      "incrementing.column.name": "id",
+      "topic.prefix": "postgres-",
+      "poll.interval.ms": "1000"
+    }
+  }
+  
