@@ -1,0 +1,8 @@
+# kafka-setup/ansible/kafka.yml
+- name: Deploy Kafka Cluster
+  hosts: kafka
+  become: yes
+  vars_files:
+    - roles/kafka/vars/main.yml
+  roles:
+    - kafka

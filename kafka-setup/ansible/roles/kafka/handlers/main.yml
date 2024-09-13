@@ -1,0 +1,5 @@
+# kafka-setup/ansible/roles/kafka/handlers/main.yml
+- name: Restart Kafka
+  systemd:
+    name: kafka
+    state: restarted

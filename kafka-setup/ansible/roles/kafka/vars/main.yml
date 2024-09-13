@@ -1,0 +1,4 @@
+# kafka-setup/ansible/roles/kafka/vars/main.yml
+keystore_password: rajan123
+key_password: rajan123
+truststore_password: rajan123

@@ -1,0 +1,68 @@
+- name: Install necessary dependencies
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - wget
+    - tar
+    - openjdk-11-jdk
+
+- name: Create Kafka directory
+  file:
+    path: /opt/kafka
+    state: directory
+    mode: '0755'
+
+- name: Create Kafka config directory
+  file:
+    path: /opt/kafka/config
+    state: directory
+    mode: '0755'
+
+- name: Download Kafka
+  get_url:
+    url: "https://archive.apache.org/dist/kafka/3.0.0/kafka_2.13-3.0.0.tgz"
+    dest: /tmp/kafka.tgz
+
+- name: Extract Kafka
+  unarchive:
+    src: /tmp/kafka.tgz
+    dest: /opt/kafka
+    remote_src: yes
+
+- name: Remove Kafka tarball
+  file:
+    path: /tmp/kafka.tgz
+    state: absent
+
+- name: Copy Kafka configuration
+  template:
+    src: server.properties.j2
+    dest: /opt/kafka/config/server.properties
+  notify:
+    - Restart Kafka
+
+- name: Create Kafka systemd service file
+  copy:
+    content: |
+      [Unit]
+      Description=Apache Kafka
+      Documentation=http://kafka.apache.org/
+      After=network.target
+
+      [Service]
+      Type=simple
+      User=kafka
+      Group=kafka
+      ExecStart=/opt/kafka/bin/kafka-server-start.sh /opt/kafka/config/server.properties
+      Restart=on-failure
+
+      [Install]
+      WantedBy=multi-user.target
+    dest: /etc/systemd/system/kafka.service
+
+- name: Reload systemd and start Kafka service
+  systemd:
+    name: kafka
+    state: started
+    enabled: yes

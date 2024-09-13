@@ -1,0 +1,15 @@
+# SSL Configuration
+security.inter.broker.protocol=SSL
+ssl.keystore.location=/etc/kafka/broker.keystore.jks
+ssl.keystore.password={{ keystore_password }} 
+ssl.key.password={{ key_password }} 
+ssl.truststore.location=/etc/kafka/broker.truststore.jks
+ssl.truststore.password={{ truststore_password }}
+
+# Listeners Configuration
+listeners=SSL://0.0.0.0:9093
+advertised.listeners=SSL://{{ ansible_default_ipv4.address }}:9093
+
+# Authorization Configuration
+authorizer.class.name=kafka.security.auth.SimpleAclAuthorizer
+super.users=User:admin
