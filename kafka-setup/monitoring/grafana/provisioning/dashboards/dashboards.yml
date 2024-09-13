@@ -1,0 +1,18 @@
+# kafka-setup/monitoring/grafana/provisioning/dashboards/dashboards.yml
+apiVersion: 1
+providers:
+  - name: 'default'
+    org_id: 1
+    folder: ''
+    type: file
+    options:
+      path: /etc/grafana/dashboards
+
+# kafka-setup/monitoring/grafana/provisioning/datasources/datasource.yml
+apiVersion: 1
+datasources:
+  - name: Prometheus
+    type: prometheus
+    access: proxy
+    url: http://localhost:9090
+    isDefault: true
